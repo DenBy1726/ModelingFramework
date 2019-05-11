@@ -3,7 +3,6 @@
 инициировал событие и время возникновения события.
 */
 #pragma once
-#include "Time.h"
 #include "Transact.h"
 #include "EventId.h"
 
@@ -18,11 +17,16 @@ namespace Model
 		//не должен отвечать за уничтожение.
 		Transact* Sender;
 		int Time;
-		Event(const EventId& id, Transact* sender, int time);
+		Event(const EventId& id, Transact* sender, int time)
+		{
+			this->Id = id;
+			this->Sender = sender;
+			this->Time = time;
+		}
 
-		Event();
-		static Event* CreateFreeEvent(Transact* t,int time);
-
-		~Event();
+		~Event()
+		{
+			Time = 0;
+		}
 	};
 }

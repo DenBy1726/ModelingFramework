@@ -1,76 +1,75 @@
-
+/*28.01.2017 19:54
+Очередь событий. Является оберткой над очередью. Нужна для упрощения интерфейса добавления
+и добавления возможности извлечь все произошедшие события.
+*/
 #pragma once
-#include "EventQueue.h"
-#include "Queue.cpp";
-namespace Model
+#include "Queue.cpp"
+#include "Event.h"
+#include <vector>
+namespace Queue
 {
-
-	//задается базовая очередь, на которой будет строится очередь событий
-	EventQueue::EventQueue(Queue::QueueType QT)
+	class EventQueue
 	{
-		data = Queue::Create<Event*>(QT);
-	}
+		IQueue<Model::Event*>* data;
+	public:
 
-	EventQueue::~EventQueue()
-	{
-		delete data;
-	}
-
-	void EventQueue::Clear()
-	{
-		data->Clear();
-	}
-
-	int EventQueue::Length()
-	{
-		return data->Length();
-	}
-
-	bool EventQueue::Empty()
-	{
-		return data->IsEmpty();
-	}
-
-	void EventQueue::Add(Event* e)
-	{
-		data->Add(e->Time, e);
-	}
-
-	//возвращает все ближайшие события.
-	std::vector<Event*> EventQueue::GetNextEvents()
-	{
-		std::vector<Event*> happening;
-		int now = data->Top()->Time;
-		while (data->Length() > 0 && data->Top()->Time == now)
+		//задается базовая очередь, на которой будет строится очередь событий
+		EventQueue(QueueType QT = Heap23)
 		{
-			happening.push_back(data->Remove());
+			data = Queue::Create<Model::Event*>(QT);
 		}
-		return happening;
-	}
 
-	//возвращает все события,произошедшие до currentTime
-	std::vector<Event*> EventQueue::GetHappened(int currentTime)
-	{
-		std::vector<Event*> happened;
-		while (data->Length() > 0 && data->Top()->Time < currentTime)
+		~EventQueue()
 		{
-			happened.push_back(data->Remove());
+			delete data;
 		}
-		return happened;
-	}
 
-	Queue::QueueType EventQueue::Type()
-	{
-		return this->data->Type();
-	}
+		void Clear()
+		{
+			data->Clear();
+		}
 
-	Event* EventQueue::Top()
-	{
-		return data->Top();
-	}
+		int Length()
+		{
+			return data->Length();
+		}
 
-	Event* EventQueue::Remove()
-	{
-		return data->Remove();
-	}
+		bool Empty()
+		{
+			return data->IsEmpty();
+		}
+
+		void Add(Model::Event* e)
+		{
+			data->Add(e->Time, e);
+		}
+
+		//возвращает все ближайшие события.
+		std::vector<Model::Event*> GetNextEvents()
+		{
+			std::vector<Model::Event*> happening;
+			int now = data->Top()->Time;
+			while (data->Length() > 0 && data->Top()->Time == now)
+			{
+				happening.push_back(data->Remove());
+			}
+			return happening;
+		}
+
+		//возвращает все события,произошедшие до currentTime
+		std::vector<Model::Event*> GetHappened(int currentTime)
+		{
+			std::vector<Model::Event*> happened;
+			while (data->Length() > 0 && data->Top()->Time < currentTime)
+			{
+				happened.push_back(data->Remove());
+			}
+			return happened;
+		}
+
+		Queue::QueueType Type()
+		{
+			return this->data->Type();
+		}
+	};
 }

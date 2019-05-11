@@ -25,7 +25,11 @@ namespace Random
 		ExponentialDistribution(const std::vector<double>& arg, const Random& gen = Random())
 		{
 			_gen = gen;
-			_dist = std::exponential_distribution<>(arg[0]);
+			_gen = gen;
+			double lambda = arg[0];
+			if (lambda > 1)
+				lambda = 1.0 / arg[0];
+			_dist = std::exponential_distribution<>(lambda);
 		}
 		double Next()
 		{

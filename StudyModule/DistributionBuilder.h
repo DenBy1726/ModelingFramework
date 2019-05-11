@@ -8,6 +8,7 @@
 */
 #pragma once
 #include "IDistribution.h"
+#include "Descriptors.cpp"
 #include <map>
 #include <string>
 
@@ -21,7 +22,8 @@ namespace Random
 		
 		
 		static IDistribution<double>* Create(const std::string& DT, const std::vector<double>& arg);
-
+		//Создание генератора распределения из дескриптора
+		static IDistribution<double>* Create(const Descriptors::DistributionDescriptor& DT);
 
 	};
 	typedef DistributionBuilder Distribution;

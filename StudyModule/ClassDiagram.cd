@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Queue::EventQueue" Collapsed="true">
+    <Position X="2.5" Y="2.75" Width="1.25" />
+    <TypeIdentifier>
+      <HashCode>AAMAAAAAAAACABAAAAIAAABAAQAAAAAAAQAQAABAAAA=</HashCode>
+      <FileName>EventQueue.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Queue::IQueue&lt;T&gt;" Collapsed="true">
+    <Position X="1" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAAAAAAQAAAAABABAAAAIAAAAAQAAAABAAAA=</HashCode>
+      <FileName>IQueue.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Random::IRandom" Collapsed="true">
+    <Position X="5.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>IRandom.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Random::Random" Collapsed="true">
+    <Position X="3.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAABAAABAAAQAAACAA=</HashCode>
+      <FileName>Random.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Random::IDistribution&lt;RetVal&gt;" Collapsed="true">
+    <Position X="7.25" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAQAAAAAAAAQAAAAAAAAAAAIQAAQAAAABA=</HashCode>
+      <FileName>IDistribution.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Queue::FIFOQueue&lt;T&gt;" Collapsed="true">
+    <Position X="2.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAABAAAAAAAAAAABABAAAAIAAAAAYAAAABAAAA=</HashCode>
+      <FileName>FIFOQueue.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Queue::PriorityQueue&lt;T&gt;" Collapsed="true">
+    <Position X="4.25" Y="1.75" Width="1.5" />
+    <InheritanceLine Type="Queue::IQueue&lt;T&gt;" ManuallyRouted="true">
+      <Path>
+        <Point X="2" Y="1.312" />
+        <Point X="2" Y="1.464" />
+        <Point X="5" Y="1.464" />
+        <Point X="5" Y="1.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAJAAAAABAAAAAAAAAAABABAAAAIAAAAAQAAAABAAAA=</HashCode>
+      <FileName>PriorityQueue.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Report::IReport" Collapsed="true">
+    <Position X="6.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>IReport.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model::Transact" Collapsed="true">
+    <Position X="0.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAACEABgCAAAEAAAAAAAQEAQAAIAAgE=</HashCode>
+      <FileName>Transact.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model::Generator" Collapsed="true">
+    <Position X="4" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAQAAAAAAAAAAAAAAAABAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Generator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicMatrix&lt;_Type&gt;" Collapsed="true">
+    <Position X="1.5" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CAEAAAAAAAAAAAQAQAAAAQAAAAEBAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>matrix.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Matrix&lt;_Type&gt;" Collapsed="true">
+    <Position X="2.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAAAgQAAAAEgAAAAAAAggAAEAAA=</HashCode>
+      <FileName>matrix.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormMatrix&lt;_Type&gt;" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAQAAACAAAAAgAAAAAAA=</HashCode>
+      <FileName>matrix.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model::Model" Collapsed="true">
+    <Position X="2.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQACABQBAKAAAAAAAAAQAAQAABAABAKABAkAAABAAAA=</HashCode>
+      <FileName>Model.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model::Node" Collapsed="true">
+    <Position X="4.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAABAgAAAAIAQAEAIgACBGQAABBAAIAJAABBFAAAA=</HashCode>
+      <FileName>Node.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model::Network" Collapsed="true">
+    <Position X="4.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAgCAAAAAAAAAAAAAAAAAAABAAAAAABAAxAAAA=</HashCode>
+      <FileName>Network.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Report::Report" Collapsed="true">
+    <Position X="6.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAABAAAAAAGAAAAAAAAAAAAgAAAAAAAACAAAABAA=</HashCode>
+      <FileName>Report.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Report::StreamReport" Collapsed="true">
+    <Position X="6.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAgAAAACAAAAAAAAAAAAAAAAAEAAAAAAAAAACEAAA=</HashCode>
+      <FileName>StreamReport.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Queue::Queue23&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAABAAAAAAAAAAABCBAAAAIAAAAAQAAAABAAAA=</HashCode>
+      <FileName>2-3Queue.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Model::Event" Collapsed="true">
+    <Position X="0.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAEAAAAAAAAgAAAAAAAAAAAAAIAQA=</HashCode>
+      <FileName>Event.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Report::Locale" Collapsed="true">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAABAAAABAAgAAAQQACAYKBQA=</HashCode>
+      <FileName>Locale.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Report::RussianLocale" Collapsed="true">
+    <Position X="8" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RussianLocale.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Statistic::FullStatistic" Collapsed="true">
+    <Position X="4.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAACAAAAACACAAAAAAA=</HashCode>
+      <FileName>FullStatistic.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Statistic::WorkStatisticUnit" Collapsed="true">
+    <Position X="6.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAIAAAAAEAAAAAAAAABAAAAA=</HashCode>
+      <FileName>WorkStatisticUnit.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Statistic::StateStatisticUnit">
+    <Position X="8.25" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAACAAAAAAAAABAAAAAgAAAAAQA=</HashCode>
+      <FileName>StateStatisticUnit.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

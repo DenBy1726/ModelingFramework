@@ -51,6 +51,4 @@ namespace Queue
 		virtual void Clear() = 0;
 
 	};
-
-
 }

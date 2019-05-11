@@ -11,25 +11,22 @@
 #pragma once
 #include "TransactStatistic.cpp"
 #include "Network.h"
+
 namespace Model
 {
 	class Network;
 	class Model;
-	class Terminal;
+
 	class Transact
 	{
-		friend class Generator;
-		friend class Terminal;
+		friend class Model;
 	protected:
 		int currentNode;
 		//-1 если транзакт удален
 		int id;
 		static int g_id;
 		
-		//Вызывется, когда транзакт появился в сети
-		virtual void OnStart(const int& time);
-		//вызывается, когда транзакт покинул сеть
-		virtual void OnStop(const int& time);
+		
 
 	public:
 		Statistic::TransactStatistic Statistic;
@@ -45,7 +42,10 @@ namespace Model
 		virtual int Move(Network* matrix);
 		//номер записи, в которой сейчас зарегистрирован транзакт.
 		int Cell;
-
+		//Вызывется, когда транзакт появился в сети
+		virtual void OnStart(const int& time);
+		//вызывается, когда транзакт покинул сеть
+		virtual void OnStop(const int& time);
 
 
 	};

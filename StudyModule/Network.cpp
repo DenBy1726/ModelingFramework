@@ -2,29 +2,27 @@
 
 namespace Model
 {
-	Network::Network(const BasicMatrix<double>& transition,NodeList* nodes)
+	Network::Network(const BasicMatrix<double>& transition, const std::vector<Node*> nodes)
 	{
 		this->TransitionMatrix = transition;
 		if (this->TransitionMatrix.width() != this->TransitionMatrix.height())
 			throw ("Матрица переходов должна быть квадратной");
 		//отнимаем 2 так как нулевой это генератор, а последний это терминатор. Они задаются неявно.
-		if (nodes->Length() != this->TransitionMatrix.width() - 2)
+		if (nodes.size() != this->TransitionMatrix.width() - 2)
 			throw ("Количество генераторов должно равнятся количеству узлов");
 		this->Channel = nodes;
-		this->_generator = new ::Random::Random();
-	}
-
-	Network::Network()
-	{
-		this->_generator = new ::Random::Random();
+		this->generator = new Random::Random();
 	}
 
 
 	Network::~Network()
 	{
 		Clear();
-		delete this->_generator;
-		
+		delete this->generator;
+		for each(Node* node in this->Channel)
+		{
+			delete node;
+		}
 	}
 
 
@@ -50,7 +48,7 @@ namespace Model
 	int Network::GetNextChannel(const int& current)
 	{
 		//число для определения нового узла
-		double probValue = this->_generator->NextDouble();
+		double probValue = this->generator->NextDouble();
 		int length = this->TransitionMatrix.height();
 		double probSum = 0;
 		//с одного так как нельзя перейти на источник
@@ -66,13 +64,12 @@ namespace Model
 	//очистить сеть
 	void Network::Clear()
 	{
-		for (int i = 0; i < Channel->Length(); i++)
+		for each(Node* node in this->Channel)
 		{
-			Channel->operator[](i)->Clear();
+			node->Clear();
 		}
+		this->Channel.clear();
 		this->TransitionMatrix = BasicMatrix<double>();
-		this->Terminal->Clear();
-		this->Generator->Clear();
 	}
 
 	//проверить является ли current узел терминатором
@@ -85,10 +82,14 @@ namespace Model
 			return false;
 	}
 
-	void Network::MoveTime()
+	Descriptors::NetworkDescriptor Network::GetDescriptor()
 	{
-		if (EventQueue->Empty() == false)
-			Time->time = EventQueue->Top()->Time;
+		std::vector<Descriptors::NodeDescriptor> nodeDescriptors;
+		for each(auto it in this->Channel)
+		{
+			nodeDescriptors.push_back(it->GetDescriptor());
+		}
+		return Descriptors::NetworkDescriptor(this->TransitionMatrix, nodeDescriptors);
 	}
 
 }

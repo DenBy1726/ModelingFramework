@@ -1,149 +1,174 @@
-#include "Generator.h"
+#include "ModelBuilder.h"
 #include "DistributionBuilder.h"
-#include "NodeQueue.h"
+#include "IDistribution.h"
 #include "Node.h"
-#include "Statistic.h"
+#include "Model.h"
 #include "StreamReport.cpp"
 #include "RussianLocale.cpp"
+#include <iostream>
 
-using namespace Model;
-using namespace Queue;
-using namespace Statistic;
-int main()
+
+
+void GoTest(std::vector<int>);
+void ToFileFromFile();
+void SerializationWork();
+void DeserializationWork();
+void MyDistributionUse();
+void HandJob();
+void HandJob2();
+void HandKarkas();
+
+void main()
 {
-	//инициализация сети
-	/* 
-	______        __________		_________		 _______
-	| Г	  \______|	|  О|   |______|	У	 |______/	Т	|
-	|_____/		 |__|___|___|	   |_________|		\_______|
-	Генератор -> Очередь -> Устройство -> Терминал
-	*/
-	Generator* generator = new Generator;
-	generator->Distribution = Random::Distribution::Create("EXP", { 20 });
+	//HandKarkas();
+	//локаль для вывода русского текста в файл
+	std::locale::global(std::locale("Rus"));
+	setlocale(0, "");
+	std::cout << "Введите путь к файлу модели: ";
+	std::string path;
+	std::cin >> path;
+	std::cout << "Ввелите количество заявок: ";
+	int ammount;
+	std::cin >> ammount;
 
-	Node* node = new Node(1);
-	node->Distribution = Random::Distribution::Create("EXP", { 10 });
-	node->Queue = new NodeQueue;
-	//node->Queue = node_queue;
+	std::ifstream file(path);
+	std::string modelText;
+	char buff;
 
-	//инициализация матрицы переходов
-	Matrix<double> transition(3,3);
-	transition[0][1] = 1;
-	transition[1][2] = 1;
-
-
-	Network* network = new Network;
-	network->TransitionMatrix = transition;
-	network->Channel = new NodeList;
-	network->Channel->Add(node);
-	network->Generator = generator;
-	network->Terminal = new Terminal;
-	network->EventQueue = new EventQueue;
-	network->Time = new Time(0);
-
-
-
-	//инициализация таблиц статистики
-	StatisticTable* Table = new StatisticTable(1);
-	
-	int ammount = 50000;
-
-	//загрузка сети заявками
-	std::vector<Transact*> transactList;
-	for (int i = 0; i < ammount; i++)
+	for (; file;)
 	{
-		Transact* t = network->Generator->CreateTransact();
-		transactList.push_back(t);
-		Event* e = Event::CreateFreeEvent(t,t->Statistic.Start);
-		network->EventQueue->Add(e);
+		file.get(buff);
+		if (file.eof()) break;
+		modelText += buff;
 	}
 
-	while (network->EventQueue->Empty() == false)
-	{
-		network->MoveTime();
-		Event* currentEvent = network->EventQueue->Remove();
+	file.close();
 
-		//получить связанный транзакт
-		Transact* transact = currentEvent->Sender;
-		Node* node = nullptr;
-		Time time = *network->Time;
-		switch (currentEvent->Id)
-		{
+	Model::ModelBuilder builder;
+	Model::Model m = *builder.Load(modelText);
 
-		case Free:
-			transact->Move(network);
+	m.Start(ammount);
+	auto Stat = m.ComputeStatistic();
 
-			if (network->IsTerminator(transact->GetNode()) == true)
-			{
-				network->Terminal->Terminate(transact, time);
-			}
-			else
-			{
-				node = network->Channel->Get(transact->GetNode() - 1);
-				Table->Register(node, transact, time);
-				if (node->IsBusy() == true)
-				{
-					node->Queue->Add(transact);
-				}
-				else
-				{
-					Table->OnStart(node, transact, time);
-					Event* happened = node->Capture(transact, time);
-					network->EventQueue->Add(happened);
-				}
-				Table->UpdateState(node, time);
-			}
-
-			break;
-		case Processed:
-			node = network->Channel->Get(transact->GetNode() - 1);
-			Table->OnRelease(node, transact, time);
-			node->Release();
-
-			Event* event = Event::CreateFreeEvent(transact, time);
-			network->EventQueue->Add(event);
-
-			if (node->Queue->Empty() == false)
-			{
-				Transact* newTransact = node->Queue->Remove();
-				Table->OnStart(node, newTransact, time);
-				Event* happened = node->Capture(newTransact, time);
-				network->EventQueue->Add(happened);
-			}
-			Table->UpdateState(node, time);
-			break;
-		}
-		delete currentEvent;
-
-	}
-
-	FullStatistic state = Table->ComputeStatistic(network->Terminal);
-
-	//10) Вывод статистики на экран
 	Report::Locale* loc = new Report::RussianLocale();
-	std::wofstream* file = new std::wofstream("output.txt");
 	Report::StreamReport reporter(&std::wcout, loc);
-	reporter.Print(state);
-	file->close();
-	delete file;
+	reporter.Name = L"Report ";
+	reporter.Print(Stat);
+
+	std::wofstream* savefile = new std::wofstream("output.txt");
+	Report::StreamReport reporter2(savefile, loc);
+	reporter2.Print(Stat);
+
+	savefile->close();
+	std::cout <<"\nКопия отчета сохранена в файл output.txt\n\n";
+
 	delete loc;
 
-/*	for (int i = 0; i < ammount; i++)
+	system("pause");
+
+
+
+
+
+
+
+
+
+
+
+
+
+//	HandKarkas();
+	//HandJob2();
+//	MyDistributionUse();
+//	DeserializationWork();
+	//GoTest({ 8 });
+	//ToFileFromFile();
+	/*setlocale(LC_ALL, "Russian");
+	std::wcout.imbue(std::locale(".1251"));
+	
+	Model::ModelBuilder mb;
+	BasicMatrix<double> tr(3);
+	tr[0][1] = 1;
+	tr[1][2] = 1;
+	std::vector<Descriptors::DistributionDescriptor> ngen;
+	ngen.push_back(Descriptors::DistributionDescriptor(Random::DistributionType::IntExponential, { 1.0/10.0 }));
+	Descriptors::DistributionDescriptor modelgen = Descriptors::DistributionDescriptor(Random::DistributionType::IntExponential, {1.0/20.0 });
+
+	Model::Model m(tr,ngen,modelgen,Queue::Heap23);
+	m.Start(50000);
+	auto s = m.ComputeStatistic();
+
+	//std::ofstream file2("model2.txt");
+//	file2 << mb.Save(m);
+
+	Report::Locale* loc = new Report::RussianLocale();
+	//std::wofstream* file = new std::wofstream("input.txt");
+	Report::StreamReport reporter(&std::wcout,loc);
+	reporter.Print(s);
+//	file->close();*/
+}
+
+void ToFileFromFile()
+{
+	std::ifstream file("model2.txt");
+	std::string modelText;
+	char buff;
+
+	for (; file;)
 	{
-		delete transactList[i];
+		file.get(buff);
+		if (file.eof()) break;
+		modelText += buff;
 	}
 
-	delete network->Time;
-	delete network->EventQueue;
-	delete network->Terminal;
-	delete node->Queue;
-	delete node->Distribution;
-	delete node;
-	delete network->Channel;
-	delete network->Generator->Distribution;
+	file.close();
 
+	Model::ModelBuilder builder;
+	Model::Model m = *builder.Load(modelText);
+	m.Start(1000);
+	auto Stat = m.ComputeStatistic();
+	modelText = builder.Save(m);
 	
-	delete network;*/
-
-
+	std::ofstream file2("model3.txt");
+	file2 << modelText;
+	file2.close();
 }
+
+/*
+AMOUNT
+
+0 1 0
+0 0 1
+0 0 0
+
+TYPE : PARAMS ;
+============================================
+TYPE:
+EXP : lambda ;
+UNIFORM : min max ;
+============================================
+Отчет:
+---------------------
+Количество транзактов:
+Время:
+Модельное время:
+Количество устройств:
+--------------------
+для каждого:
+--------------------
+Номер:
+Загрузка канала (ro) :
+Средняя длинна очереди (l) :
+Среднее число транзактов канале (m) :
+Среднее время пребывания в очереди (w) :
+Среднее время работы (u) :
+-------------------
+Системные характеристики:
+Средняя длинна очереди (l) :
+Среднее число транзактов канале (m) :
+Среднее время пребывания в очереди (w) :
+Среднее время работы (u) :
+
+
+*/

@@ -26,7 +26,7 @@ namespace Queue
 		case QueueType::Standart:
 			object = new PriorityQueue<T>();
 			break;
-
+		
 		case QueueType::Binary:
 			object = new BinaryQueue<T>();
 			break;

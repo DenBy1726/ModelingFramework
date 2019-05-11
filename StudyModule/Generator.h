@@ -1,19 +1,20 @@
+/*
+07.04.2017 19:37
+Класс для генерации заявок(транзактов)
+*/
 #pragma once
-#include "IDistribution.h"
+#include "Distribution.cpp"
 #include "Transact.h"
+#include "Descriptors.cpp"
 namespace Model
 {
-	
-	class Transact;
 	class Generator
 	{
+		Random::IDistribution<double>* Random;
 		int time;
 	public:
-		Random::IDistribution<double>* Distribution;
+		Generator(const Descriptors::DistributionDescriptor& dis);
+		Generator(Random::IDistribution<double>* rnd);
 		Transact* CreateTransact();
-		Generator();
-		Generator::Generator(Random::IDistribution<double>* rnd);
-		void Clear();
-		~Generator();
 	};
 }

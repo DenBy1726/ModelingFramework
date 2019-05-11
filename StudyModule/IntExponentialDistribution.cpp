@@ -20,7 +20,7 @@ namespace Random
 			_gen = gen;
 		}
 
-		//аргумент 1- лямбда
+		////аргумент 1- лямбда
 		IntExponentialDistribution(const std::vector<double>& arg, const Random& gen = Random())
 		{
 			_gen = gen;

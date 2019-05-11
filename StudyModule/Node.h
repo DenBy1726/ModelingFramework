@@ -28,53 +28,72 @@ bool isWorking заменен на int capacity.Означает количество незанятых каналов. Ес
 Теперь канал задается при помощи NodeDescriptor. Ранее DistributionDescriptor
 */
 #pragma once
-#include "Time.h"
 #include "IDistribution.h"
 #include "Transact.h"
 #include "IQueue.h"
+#include "FifoQueue.cpp"
 #include "Event.h"
+#include "Descriptors.cpp"
+#include "StateStatisticUnit.cpp"
+#include "WorkStatisticUnit.cpp"
 #include "DistributionBuilder.h"
-#include "NodeQueue.h"
-#include "NodeList.h"
 #include <vector>
+#include <map>
 namespace Model
 {
 	class Transact;
 	struct Event;
-	class NodeQueue;
-	class NodeList;
+
 	class Node
 	{
 		friend class Model;
-		friend class NodeList;
-		
-
 	private:
-
+		Random::IDistribution<double>* generator;
+		
 		int channel;
-		int capacity;	
-		int id;
+		int capacity;
+		std::vector<Statistic::StateStatisticUnit> Statistic;
+		std::vector<Statistic::WorkStatisticUnit> WorkStatistic;
+		
+		//Вызывется когда транзакт с номером numberOfTransact входит в канал
+		void OnEnter(const int& id,const int& time);
 	
+
 	public:
-		
-		
-		NodeQueue* Queue;
-		Random::IDistribution<double>* Distribution;
+		Queue::IQueue<Transact*>* Queue;
 
-		Node(int capacity);
-
-		Node(Random::IDistribution<double>* dist, int capacity = 1);
+		Node(Random::IDistribution<double>* dist, int capacity = 1, Queue::IQueue<Transact*>* q = new Queue::FIFOQueue<Transact*>());
 
 		~Node();
-
+		//отметить факт прихода заявки и начать попытку захвата
+		Event* BeginCapture(Transact* haveEntered, const int& time);
 		//Попытаться занять канал если он свободен,иначе стать в очередь. 
-	//	Event* TryCapture(Transact* haveEntered, const int& time);
+		Event* TryCapture(Transact* haveEntered,const int& time);
 		//захват канала
 		Event* Capture(Transact* haveEntered, const int& time);
 
+		//регистрация заявки в канале
+		void Register(Transact* haveEntered, const int& time);
+
+		//Вызывется когда транзакт с номером numberOfTransact начинает обработку
+		void OnStart(const int& statId, const int& time);
+		//Вызывется когда транзакт с номером numberOfTransact завершает обработку
+		void OnRelease(const int& statId, const int& time);
+
+		//Вызывется когда транзакт начинает обработку
+		void OnStart(Transact* tr, const int& time);
+		//Вызывется когда транзакт завершает обработку
+		void OnRelease(Transact* tr, const int& time);
+
+		std::vector<Statistic::StateStatisticUnit> GetStateStatistic();
+		std::vector<Statistic::WorkStatisticUnit> GetWorkStatistic();
+
+		//вносит в статистику информацию о новом состоянии
+		void UpdateState(const int& time);
+		
 		//Освобождает канал и если в канал была загружена новая заявка, возвращает событие
 		//освобождения канала.Так канал не знает текущего времени, time подается текущее время.
-		void Release();
+		Event* Release(Transact* released,const int& time);
 		//очистка канала
 		void Clear();
 
@@ -86,9 +105,8 @@ namespace Model
 
 		int Channel();
 
-		int GetId();
-
-
+		//возвращает дескриптор, который содержит информацию об объекте,чтобы потом можно было восстановить
+		Descriptors::NodeDescriptor GetDescriptor();
 
 	};
 }

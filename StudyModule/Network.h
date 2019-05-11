@@ -14,49 +14,29 @@
 #include "matrix.h"
 #include "Node.h"
 #include "IRandom.h"
-
+#include "Queue.cpp"
+#include "Descriptors.cpp"
 #include "DistributionBuilder.h"
-#include "Generator.h"
-#include "Terminal.h"
-#include "Time.h"
-#include "Transact.h"
-//#include "Statistic.cpp"
-#include "IQueue.h"
-#include "EventQueue.h"
-#include "NodeList.h"
+
 #include <vector>
 
 namespace Model
 {
 	class Node;
-	class Generator;
-	class Terminal;
-	class EventQueue;
-	class NodeList;
 	class Network
 	{
 	private:
-		Random::IRandom* _generator;
-		
+		Random::IRandom* generator;
 	public:
-		
 		//матрица переодов
 		BasicMatrix<double> TransitionMatrix;
 		//список каналов сети
-		
-		
-		Generator* Generator;
-		Terminal* Terminal;
-		EventQueue* EventQueue;
-		NodeList* Channel;
-
-		Time* Time;
+		std::vector<Node*> Channel;
 
 		~Network();
 		
 		//handler - дескриптор сети
-		Network(const BasicMatrix<double>& transition, NodeList* nodes);
-		Network();
+		Network(const BasicMatrix<double>& transition, const std::vector<Node*> nodes);
 		//получить номер канала, в который перейдет транзакт из current
 		int GetNextChannel(const int& current);
 		//очистить сеть
@@ -64,10 +44,7 @@ namespace Model
 		//проверить является ли current узел терминатором
 		bool IsTerminator(const int& current);
 
-		void MoveTime();
-
-
-
+		Descriptors::NetworkDescriptor GetDescriptor();
 	};
 
 	
